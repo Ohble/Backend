@@ -1,10 +1,13 @@
 package com.ohble.domain.answer;
 
-import jakarta.persistence.*;
+import com.ohble.domain.question.Question;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 public class Answer {
 
     @Id
@@ -17,7 +20,12 @@ public class Answer {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    public Answer(String content) {
+    @JoinColumn(columnDefinition = "question_id")
+    @ManyToOne
+    private Question question;
+
+    public Answer(String content, Question question) {
         this.content = content;
+        this.question = question;
     }
 }

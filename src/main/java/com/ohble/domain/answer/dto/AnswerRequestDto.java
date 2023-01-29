@@ -1,8 +1,9 @@
 package com.ohble.domain.answer.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.sun.istack.NotNull;
 import lombok.Getter;
+
+import javax.validation.constraints.NotBlank;
 
 public class AnswerRequestDto {
 
@@ -10,6 +11,8 @@ public class AnswerRequestDto {
     public static class CreateForm {
         @NotBlank
         private String content;
+        @NotNull
+        private Long questionId;
     }
 
     @Getter
