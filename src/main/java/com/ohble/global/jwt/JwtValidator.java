@@ -1,6 +1,6 @@
 package com.ohble.global.jwt;
 
-import com.ohble.global.exception.CustomException;
+import com.usw.sugo.global.exception.CustomException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.NoSuchElementException;
 
-import static com.ohble.global.exception.ExceptionType.JWT_MALFORMED_EXCEPTION;
+import static com.usw.sugo.global.exception.ExceptionType.JWT_EXPIRED_EXCEPTION;
+import static com.usw.sugo.global.exception.ExceptionType.JWT_MALFORMED_EXCEPTION;
 
 @Component
 public class JwtValidator {
@@ -27,7 +28,7 @@ public class JwtValidator {
     }
 
     // Jwt 유효성 검사
-    public boolean validateToken(String token) throws ExpiredJwtException {
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
@@ -36,7 +37,26 @@ public class JwtValidator {
         } catch (NoSuchElementException | BadCredentialsException |
                  MalformedJwtException | IllegalArgumentException exception) {
             throw new CustomException(JWT_MALFORMED_EXCEPTION);
+        } catch (ExpiredJwtException exception) {
+            throw new CustomException(JWT_EXPIRED_EXCEPTION);
         }
         return true;
+    }
+
+    public boolean refreshTokenIsExpired(String refreshToken) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(refreshToken);
+        }
+        catch (NoSuchElementException | BadCredentialsException |
+               MalformedJwtException | IllegalArgumentException exception) {
+            throw new CustomException(JWT_MALFORMED_EXCEPTION);
+        }
+        catch (ExpiredJwtException exception) {
+            return true;
+        }
+        return false;
     }
 }
