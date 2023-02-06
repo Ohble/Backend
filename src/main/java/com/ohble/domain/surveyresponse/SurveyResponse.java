@@ -1,21 +1,20 @@
-package com.ohble.domain.question;
+package com.ohble.domain.surveyresponse;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.ohble.domain.question.Question;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Question {
+public class SurveyResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
-    private String content;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
+    private Question question;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
