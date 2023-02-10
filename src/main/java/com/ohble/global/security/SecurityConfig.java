@@ -33,7 +33,21 @@ public class SecurityConfig {
     private final JwtGenerator jwtGenerator;
     private final JwtResolver jwtResolver;
     private final ObjectMapper mapper;
-    private final List<String> whiteListURI = List.of("/v1/user", "/v1/user/auth");
+    private final List<String> whiteListURI = List.of(
+            "/v1/user", "/v1/user/auth", "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**",
+            "/webjars/springfox-swagger-ui/springfox.css",
+            "/webjars/springfox-swagger-ui/swagger-ui.css",
+            "/webjars/springfox-swagger-ui/swagger-ui-bundle.js",
+            "/webjars/springfox-swagger-ui/swagger-ui-standalone-preset.js",
+            "/webjars/springfox-swagger-ui/springfox.js",
+            "/webjars/springfox-swagger-ui/favicon-32x32.png",
+            "/swagger-resources/configuration/ui",
+            "/swagger-resources/configuration/security",
+            "/swagger-resources"
+    );
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,7 +61,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .authorizeRequests()
-                .antMatchers(whiteListURI.toString()).permitAll()
+                .antMatchers(String.valueOf(whiteListURI))
+                .permitAll()
         ;
         http
                 .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
