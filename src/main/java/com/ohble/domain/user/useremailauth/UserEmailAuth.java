@@ -1,4 +1,5 @@
-package com.ohble.domain.refreshtoken;
+package com.ohble.domain.user.useremailauth;
+
 
 import com.ohble.domain.user.user.User;
 import lombok.AllArgsConstructor;
@@ -9,24 +10,20 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Builder
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RefreshToken {
+public class UserEmailAuth {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Column
     private String payload;
-
-    public void updatePayload(String payload) {
-        this.payload = payload;
-    }
 }

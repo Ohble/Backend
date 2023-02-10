@@ -2,7 +2,8 @@ package com.ohble.global.jwt;
 
 import com.ohble.domain.refreshtoken.RefreshToken;
 import com.ohble.domain.refreshtoken.repository.RefreshTokenRepository;
-import com.ohble.domain.user.User;
+import com.ohble.domain.user.user.User;
+import com.ohble.global.exception.CustomException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,11 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.ohble.global.exception.ExceptionType.USER_NOT_EXIST;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-
 public class JwtGenerator {
 
     private final RefreshTokenRepository refreshTokenRepository;
@@ -60,6 +62,7 @@ public class JwtGenerator {
         claims.setSubject("OHBLE-BY-KDH");
         claims.put("id", user.getId());
         claims.put("loginId", user.getLoginId());
+        claims.put("status", user.getStatus());
 
         // Bearer Access Token 생성
         return "Bearer " + Jwts.builder()
@@ -118,7 +121,6 @@ public class JwtGenerator {
                 .build();
 
         refreshTokenRepository.save(entityFormRefreshToken);
-
         return "Bearer " + stringRefreshToken;
     }
 
@@ -138,9 +140,12 @@ public class JwtGenerator {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
 
-        refreshTokenRepository.refreshPayload(user.getId(), updatedRefreshToken);
-
-        return "Bearer " + updatedRefreshToken;
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(user.getId());
+        if (refreshToken.isPresent()) {
+            refreshToken.get().updatePayload(updatedRefreshToken);
+            return "Bearer " + updatedRefreshToken;
+        }
+        throw new CustomException(USER_NOT_EXIST);
     }
 
     public Map<String, String> wrapTokenPair(String accessToken, String refreshToken) {

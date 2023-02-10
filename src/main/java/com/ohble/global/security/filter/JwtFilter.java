@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.ohble.global.exception.ExceptionType.REQUIRE_TOKEN;
+import static com.ohble.global.exception.ExceptionType.USER_UNAUTHORIZED;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -39,6 +40,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
             String token = request.getHeader("Authorization").substring(7);
+            if (jwtResolver.jwtResolveToUserStatus(token).equals("NOT_AUTH")) {
+                setExceptionResponseForm(response, new CustomException(USER_UNAUTHORIZED));
+                response.flushBuffer();
+                return;
+            }
             registContextHolderForAuthentication(jwtResolver.jwtResolveToUserLoginId(token));
         }
         filterChain.doFilter(request, response);

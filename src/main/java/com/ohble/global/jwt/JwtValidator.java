@@ -1,6 +1,6 @@
 package com.ohble.global.jwt;
 
-import com.usw.sugo.global.exception.CustomException;
+import com.ohble.global.exception.CustomException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.NoSuchElementException;
 
-import static com.usw.sugo.global.exception.ExceptionType.JWT_EXPIRED_EXCEPTION;
-import static com.usw.sugo.global.exception.ExceptionType.JWT_MALFORMED_EXCEPTION;
+import static com.ohble.global.exception.ExceptionType.JWT_EXPIRED_EXCEPTION;
+import static com.ohble.global.exception.ExceptionType.JWT_MALFORMED_EXCEPTION;
+
 
 @Component
 public class JwtValidator {
@@ -49,12 +50,10 @@ public class JwtValidator {
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(refreshToken);
-        }
-        catch (NoSuchElementException | BadCredentialsException |
-               MalformedJwtException | IllegalArgumentException exception) {
+        } catch (NoSuchElementException | BadCredentialsException |
+                 MalformedJwtException | IllegalArgumentException exception) {
             throw new CustomException(JWT_MALFORMED_EXCEPTION);
-        }
-        catch (ExpiredJwtException exception) {
+        } catch (ExpiredJwtException exception) {
             return true;
         }
         return false;

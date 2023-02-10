@@ -1,7 +1,7 @@
 package com.ohble.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ohble.domain.user.repository.UserDetailsRepository;
+import com.ohble.domain.user.user.repository.UserDetailsRepository;
 import com.ohble.global.jwt.JwtGenerator;
 import com.ohble.global.jwt.JwtResolver;
 import com.ohble.global.security.filter.JwtFilter;
@@ -33,8 +33,7 @@ public class SecurityConfig {
     private final JwtGenerator jwtGenerator;
     private final JwtResolver jwtResolver;
     private final ObjectMapper mapper;
-
-    private final List<String> whiteListURI = List.of();
+    private final List<String> whiteListURI = List.of("/v1/user", "/v1/user/auth");
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

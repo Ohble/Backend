@@ -2,7 +2,7 @@ package com.ohble.domain.refreshtoken.controller;
 
 import com.ohble.domain.refreshtoken.RefreshToken;
 import com.ohble.domain.refreshtoken.repository.RefreshTokenRepository;
-import com.ohble.domain.user.User;
+import com.ohble.domain.user.user.User;
 import com.ohble.global.exception.CustomException;
 import com.ohble.global.jwt.JwtGenerator;
 import com.ohble.global.jwt.JwtValidator;

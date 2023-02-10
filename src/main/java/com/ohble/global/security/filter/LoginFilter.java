@@ -1,9 +1,9 @@
 package com.ohble.global.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ohble.domain.user.User;
-import com.ohble.domain.user.controller.dto.UserRequestDto.LoginRequestForm;
-import com.ohble.domain.user.repository.UserDetailsRepository;
+import com.ohble.domain.user.user.User;
+import com.ohble.domain.user.user.controller.dto.UserRequestDto.LoginRequestForm;
+import com.ohble.domain.user.user.repository.UserDetailsRepository;
 import com.ohble.global.exception.CustomException;
 import com.ohble.global.jwt.JwtGenerator;
 import org.json.JSONObject;
@@ -37,9 +37,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     private final JwtGenerator jwtGenerator;
     private final ObjectMapper mapper;
     public static final String HTTP_METHOD = "POST";
-    public static final String REQUEST_URI = "/user/login";
+    public static final String REQUEST_URI = "/v1/user/login";
     private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER =
-            new AntPathRequestMatcher("/user/login", HTTP_METHOD);
+            new AntPathRequestMatcher("/v1/user/login", HTTP_METHOD);
 
     public LoginFilter(AuthenticationManager customAuthenticationManager,
                        UserDetailsRepository userDetailsRepository, UserDetailsService userDetailsService,
@@ -51,19 +51,6 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtGenerator = jwtGenerator;
         this.mapper = objectMapper;
-    }
-
-    private boolean validateURI(HttpServletRequest request) {
-        if (request.getRequestURI().equals(REQUEST_URI) && request.getMethod().equals(HTTP_METHOD)
-                && request.getContentType().equals("application/json")) {
-            return true;
-        }
-        throw new AuthenticationServiceException("Requested method not supported");
-    }
-
-    private LoginRequestForm extractLoginRequestForm(HttpServletRequest request) throws IOException {
-        return mapper.readValue(StreamUtils.copyToString(request.getInputStream(), UTF_8),
-                LoginRequestForm.class);
     }
 
     @Override
@@ -101,6 +88,19 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
             }
         }
         throw new AuthenticationServiceException("Authorization method not supported");
+    }
+
+    private boolean validateURI(HttpServletRequest request) {
+        if (request.getRequestURI().equals(REQUEST_URI) && request.getMethod().equals(HTTP_METHOD)
+                && request.getContentType().equals("application/json")) {
+            return true;
+        }
+        throw new AuthenticationServiceException("Requested method not supported");
+    }
+
+    private LoginRequestForm extractLoginRequestForm(HttpServletRequest request) throws IOException {
+        return mapper.readValue(StreamUtils.copyToString(request.getInputStream(), UTF_8),
+                LoginRequestForm.class);
     }
 
     private Authentication createAuthenticationByLoginForm(String loginId, String password) {
