@@ -50,6 +50,7 @@ dependencies {
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
     // MySQL
     implementation 'mysql:mysql-connector-java'
