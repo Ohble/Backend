@@ -35,7 +35,6 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .select() //ApiSelectorBuilder를 생성
                 .apis(RequestHandlerSelectors.basePackage("com.ohble.domain")) //API 범위 지정 (해당 패키지 내부에 있는 모든 Request 출력)
                 .paths(PathSelectors.any()) //스웨거 html 페이지에 모든 URL 제공
-                //.paths(PathSelectors.ant("/test/**")) 스웨거 html 페이지에 특정 api만 보여주고 싶다면 해당 부분 설정
                 .build();
     }
 
