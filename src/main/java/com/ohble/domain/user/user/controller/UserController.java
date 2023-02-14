@@ -22,8 +22,6 @@ public class UserController {
     @ResponseStatus(OK)
     @PostMapping
     public Map<String, Long> join(@RequestBody JoinRequestForm joinRequestForm) {
-        System.out.println("joinRequestForm = " + joinRequestForm.getLoginId());
-        System.out.println("joinRequestForm = " + joinRequestForm.getPassword());
         return userService.join(joinRequestForm);
     }
 
