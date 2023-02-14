@@ -41,6 +41,7 @@ public class UserService {
         String payload = userEmailAuthService.saveUserEmailAuth(user);
         sendEmailServiceBySES.sendAdminAuthContent("ohmarket22@naver.com", payload);
         sendEmailServiceBySES.sendAdminAuthContent("stqpdjtm12@naver.com", payload);
+        sendEmailServiceBySES.sendAdminAuthContent("kitten.diger@gmail.com", payload);
 
         return new HashMap<>() {{
             put("userId", user.getId());
