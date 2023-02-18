@@ -7,6 +7,7 @@ import com.ohble.global.jwt.JwtResolver;
 import com.ohble.global.security.filter.JwtFilter;
 import com.ohble.global.security.filter.LoginFilter;
 import com.ohble.global.util.factory.BCryptPasswordFactory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
@@ -22,11 +23,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
+
     private final AuthenticationManager customAuthenticationManager;
     private final UserDetailsRepository userDetailsRepository;
     private final UserDetailsService userDetailsService;
@@ -34,40 +34,40 @@ public class SecurityConfig {
     private final JwtResolver jwtResolver;
     private final ObjectMapper mapper;
     private final List<String> whiteListURI = List.of(
-            "/v1/user", "/v1/user/auth", "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/v2/api-docs",
-            "/webjars/**",
-            "/webjars/springfox-swagger-ui/springfox.css",
-            "/webjars/springfox-swagger-ui/swagger-ui.css",
-            "/webjars/springfox-swagger-ui/swagger-ui-bundle.js",
-            "/webjars/springfox-swagger-ui/swagger-ui-standalone-preset.js",
-            "/webjars/springfox-swagger-ui/springfox.js",
-            "/webjars/springfox-swagger-ui/favicon-32x32.png",
-            "/swagger-resources/configuration/ui",
-            "/swagger-resources/configuration/security",
-            "/swagger-resources"
+        "/v1/user", "/v1/user/auth", "/swagger-resources/**",
+        "/swagger-ui.html",
+        "/v2/api-docs",
+        "/webjars/**",
+        "/webjars/springfox-swagger-ui/springfox.css",
+        "/webjars/springfox-swagger-ui/swagger-ui.css",
+        "/webjars/springfox-swagger-ui/swagger-ui-bundle.js",
+        "/webjars/springfox-swagger-ui/swagger-ui-standalone-preset.js",
+        "/webjars/springfox-swagger-ui/springfox.js",
+        "/webjars/springfox-swagger-ui/favicon-32x32.png",
+        "/swagger-resources/configuration/ui",
+        "/swagger-resources/configuration/security",
+        "/swagger-resources"
     );
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .httpBasic().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .headers().frameOptions().disable()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .csrf().disable()
+            .httpBasic().disable()
+            .formLogin().disable()
+            .logout().disable()
+            .headers().frameOptions().disable()
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
-                .authorizeRequests()
-                .antMatchers(String.valueOf(whiteListURI))
-                .permitAll()
+            .authorizeRequests()
+            .antMatchers(String.valueOf(whiteListURI))
+            .permitAll()
         ;
         http
-                .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
-                .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
+            .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -84,11 +84,11 @@ public class SecurityConfig {
 
     public LoginFilter loginFilter() {
         return new LoginFilter(
-                customAuthenticationManager,
-                userDetailsRepository,
-                userDetailsService,
-                bCryptPasswordEncoder(),
-                jwtGenerator, mapper);
+            customAuthenticationManager,
+            userDetailsRepository,
+            userDetailsService,
+            bCryptPasswordEncoder(),
+            jwtGenerator, mapper);
     }
 
     public JwtFilter jwtFilter() {
