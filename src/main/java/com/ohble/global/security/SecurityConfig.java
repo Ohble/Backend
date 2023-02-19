@@ -34,7 +34,7 @@ public class SecurityConfig {
     private final JwtResolver jwtResolver;
     private final ObjectMapper mapper;
     private final List<String> whiteListURI = List.of(
-        "/v1/user", "/v1/user/auth", "/swagger-resources/**", "/v1/survey-result",
+        "/v1/user", "/v1/user/auth", "/swagger-resources/**", "/v1/survey-result", "/v1/participant",
         "/swagger-ui.html",
         "/v2/api-docs",
         "/webjars/**",
