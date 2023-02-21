@@ -15,6 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/survey-result")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SurveyResultController {
 
     private final SurveyResultService surveyResultService;

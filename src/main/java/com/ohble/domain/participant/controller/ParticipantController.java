@@ -3,6 +3,7 @@ package com.ohble.domain.participant.controller;
 import com.ohble.domain.participant.service.ParticipantService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/participant")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ParticipantController {
 
     private final ParticipantService participantService;
