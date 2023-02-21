@@ -31,7 +31,6 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         // WhiteList에 포함되어있지 않으면 조건문 들어감
         if (!isRequestURIWhiteList(request)) {
             if (isNotContainedToken(request, response)) {

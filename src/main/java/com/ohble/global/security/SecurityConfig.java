@@ -1,5 +1,7 @@
 package com.ohble.global.security;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ohble.domain.user.user.repository.UserDetailsRepository;
 import com.ohble.global.jwt.JwtGenerator;
@@ -13,7 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -49,14 +50,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable();
-        http
+            .csrf().disable()
             .httpBasic().disable()
             .formLogin().disable()
             .logout().disable()
             .headers().frameOptions().disable()
             .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .sessionManagement().sessionCreationPolicy(STATELESS);
         http
             .authorizeRequests()
             .antMatchers(String.valueOf(whiteListURI))
