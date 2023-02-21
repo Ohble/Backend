@@ -52,7 +52,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            .csrf().disable();
+        http
             .httpBasic().disable()
             .formLogin().disable()
             .logout().disable()
@@ -65,23 +66,23 @@ public class SecurityConfig {
             .permitAll()
         ;
         http
-            .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
+            //.addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
             .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("localhost:3000");
-        config.addAllowedOrigin("localhost:5173");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter();
-    }
+//    public CorsFilter corsFilter() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowCredentials(true);
+//        config.addAllowedOrigin("localhost:3000");
+//        config.addAllowedOrigin("localhost:5173");
+//        config.addAllowedHeader("*");
+//        config.addAllowedMethod("*");
+//        source.registerCorsConfiguration("/**", config);
+//        return new CorsFilter();
+//    }
 
     public LoginFilter loginFilter() {
         return new LoginFilter(
