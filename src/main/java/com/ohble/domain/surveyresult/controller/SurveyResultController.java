@@ -31,7 +31,7 @@ public class SurveyResultController {
 
     @ApiOperation(value = "지금까지 제출된 설문조사 내역을 보여준다.", notes = "설문 조사를 제출할 때와 폼은 같다.")
     @ResponseStatus(OK)
-    @GetMapping
+    @GetMapping("/")
     public List<SurveyResult> loadAllSurveyResult() {
         return surveyResultService.executeLoadAllSurveyResult();
     }
