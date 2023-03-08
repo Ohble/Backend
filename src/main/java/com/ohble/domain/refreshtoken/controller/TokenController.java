@@ -9,6 +9,7 @@ import com.ohble.global.jwt.JwtValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 @RequestMapping("/token")
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TokenController {
 
     private final RefreshTokenRepository refreshTokenRepository;
